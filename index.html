@@ -1,321 +1,461 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RB Web Solutions | Impulsá tu negocio online</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RB Web Solutions | PRO</title>
+
+  <!-- CSP básica -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https:; 
+    script-src 'self' https://www.gstatic.com https://www.googleapis.com 'unsafe-inline' 'unsafe-eval';
+    connect-src 'self' https://firestore.googleapis.com https://www.googleapis.com https://formspree.io;
+    img-src 'self' data: https://images.unsplash.com;
+    style-src 'self' 'unsafe-inline' https:;
+    font-src 'self' https://fonts.gstatic.com;">
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #0d0d0d;
-      color: #f1f1f1;
-      line-height: 1.6;
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter, Poppins, system-ui, Arial; background:#0b0b0c;color:#eaeaea;line-height:1.5}
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
 
-    header {
-      background-image: url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d');
-      background-size: cover;
-      background-position: center;
-      padding: 100px 20px;
-      text-align: center;
-      position: relative;
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 0;
-    }
-    header * { position: relative; z-index: 1; }
-    h1 { font-size: 2.8em; color: #d4af37; margin-bottom: 10px; }
-    header p { font-size: 1.2em; }
-    nav a {
-      color: #f1f1f1;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    nav a:hover { color: #d4af37; }
+    header{background:linear-gradient(180deg, rgba(2,2,2,0.85), rgba(6,6,6,0.85)), url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d') center/cover no-repeat;padding:80px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .brand{color:#d4af37;font-weight:700;font-size:2.1rem}
+    header p{margin-top:10px;color:#f3f3f3;max-width:900px;margin-left:auto;margin-right:auto}
 
-    section {
-      padding: 80px 20px;
-      text-align: center;
-      border-top: 1px solid #222;
-      background: #111;
-    }
+    section{padding:60px 20px;background:linear-gradient(180deg,#0f0f10 0,#0b0b0c 100%);border-top:1px solid rgba(255,255,255,0.03)}
+    h2{color:#d4af37;margin-bottom:10px}
+    p.lead{color:#dcdcdc;max-width:900px;margin:0 auto 10px}
 
-    h2 { color: #d4af37; font-size: 2em; margin-bottom: 20px; }
+    .cards{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+    .card{background:#121212;border-radius:12px;padding:20px;width:300px;border:1px solid rgba(212,175,55,0.06);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .card h3{color:#d4af37;margin-bottom:8px}
+    .btn{display:inline-block;background:#d4af37;color:#000;padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;border:0}
+    .btn.secondary{background:transparent;border:1px solid rgba(212,175,55,0.12);color:#d4af37}
 
-    .btn {
-      display: inline-block;
-      background: #d4af37;
-      color: #000;
-      padding: 12px 30px;
-      border-radius: 6px;
-      font-weight: bold;
-      margin-top: 20px;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    .btn:hover { background: #f1c542; }
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:60;align-items:center;justify-content:center;padding:20px}
+    .modal.open{display:flex}
+    .card-form{width:100%;max-width:720px;background:#0f0f11;border-radius:12px;padding:18px;border:2px solid #222;color:#eaeaea;max-height:90vh;overflow:auto}
+    label{font-weight:600;color:#d4af37;margin-top:12px;display:block}
+    input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #262626;background:#0b0b0b;color:#fff;margin-top:6px}
+    textarea{min-height:110px;resize:vertical}
 
-    .servicios {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 40px;
-    }
-    .servicio {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 10px;
-      padding: 30px;
-      width: 280px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    .servicio:hover { transform: translateY(-5px); border-color: #d4af37; }
+    .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+    .note{color:#bdbdbd;font-size:.9rem;margin-top:8px}
 
-    footer {
-      background: #0a0a0a;
-      color: #aaa;
-      text-align: center;
-      padding: 40px 20px;
-      border-top: 1px solid #222;
-    }
-    footer a { color: #d4af37; font-weight: 500; }
+    .confirm-wrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center}
+    .confirm-card{background:#0d0d0d;border:2px solid #d4af37;padding:26px 34px;border-radius:12px;color:#d4af37;font-weight:700;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+    .confirm-card small{display:block;color:#cfcfcf;font-weight:400;margin-top:8px;font-size:.9rem}
 
-    /* FORMULARIOS MODALES */
-    #formulario, #diagnostico {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+    .admin{padding:18px;background:#0f0f11;border-radius:10px;border:1px solid #222;margin-top:18px;color:#eaeaea}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:.95rem}
+    th{color:#d4af37}
+    .status{padding:6px 8px;border-radius:6px;font-weight:700}
 
-    .form-box {
-      background: #1a1a1a;
-      padding: 30px;
-      border-radius: 10px;
-      border: 1px solid #333;
-      width: 90%;
-      max-width: 600px;
-      text-align: left;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .form-box h3 { color: #d4af37; text-align: center; margin-bottom: 20px; }
-    label { display: block; margin-top: 15px; font-weight: bold; }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      border-radius: 6px;
-      border: 1px solid #444;
-      background: #111;
-      color: #f1f1f1;
-    }
-
-    #resumen, #resumen2 {
-      margin-top: 20px;
-      padding: 20px;
-      background: #111;
-      border-radius: 10px;
-      display: none;
-    }
-
-    .cerrar {
-      float: right;
-      background: #d4af37;
-      color: #000;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    @media (max-width:700px){header{padding:48px 16px}.card{width:100%}}
   </style>
 </head>
 <body>
-
   <header>
-    <h1>RB Web Solutions</h1>
-    <p>Diseñamos sitios web y estrategias digitales para impulsar tu negocio.</p>
-    <nav>
-      <a href="#inicio">Inicio</a>
-      <a href="#servicios">Servicios</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
+    <div class="container">
+      <div class="brand">RB Web Solutions</div>
+      <p>Versión PRO — guardado en base de datos, panel de administración y máxima seguridad.</p>
+    </div>
   </header>
 
-  <section id="inicio">
-    <h2>Impulsá tu negocio online</h2>
-    <p>Convertí tus ideas en resultados con un sitio web profesional, optimizado y personalizado.</p>
-  </section>
-
-  <section id="servicios">
-    <h2>Servicios</h2>
-    <div class="servicios">
-      <div class="servicio" id="abrirFormulario">
-        <h3>Diseño Web Profesional</h3>
-        <p>Elegí el estilo, colores y estructura de tu sitio ideal.</p>
+  <main class="container">
+    <section id="inicio">
+      <h2>Servicios</h2>
+      <p class="lead">Elegí una opción y completá el formulario. Tus respuestas quedarán guardadas en la base de datos y te llegarán por email.</p>
+      <div class="cards">
+        <div class="card">
+          <h3>Diseño Web Profesional</h3>
+          <p>Encuesta completa para definir estructura, colores y tipografía.</p>
+          <button class="btn" data-open="modal-design">Abrir</button>
+        </div>
+        <div class="card">
+          <h3>Consultoría para Emprendedores</h3>
+          <p>Diagnóstico estratégico para tu negocio.</p>
+          <button class="btn" data-open="modal-consult">Abrir</button>
+        </div>
+        <div class="card">
+          <h3>SEO & Publicidad</h3>
+          <p>Presupuesto para campañas y posicionamiento.</p>
+          <button class="btn" data-open="modal-seo">Abrir</button>
+        </div>
       </div>
-      <div class="servicio" id="abrirDiagnostico">
+    </section>
+
+    <!-- Modal Diseño -->
+    <div id="modal-design" class="modal" aria-hidden="true">
+      <div class="card-form" role="dialog" aria-modal="true" aria-labelledby="design-title">
+        <h3 id="design-title">Diseño Web Profesional</h3>
+        <form id="formDesign">
+          <label>Tipo de sitio</label>
+          <select name="tipo" required>
+            <option>Empresa / Negocio</option>
+            <option>Personal / Portfolio</option>
+            <option>Tienda Online</option>
+            <option>Blog</option>
+          </select>
+          <label>Estilo</label>
+          <select name="estilo">
+            <option>Moderno</option>
+            <option>Corporativo</option>
+            <option>Creativo</option>
+            <option>Oscuro</option>
+          </select>
+          <label>Colores</label>
+          <input name="colores" placeholder="Ej: azul y blanco">
+          <label>Tipografía</label>
+          <input name="tipografia" placeholder="Ej: Poppins">
+          <label>Secciones</label>
+          <textarea name="secciones" placeholder="Inicio, Servicios, Contacto"></textarea>
+          <label>Logo (¿tenés?)</label>
+          <select name="logo">
+            <option>Si</option>
+            <option>No</option>
+          </select>
+          <label>Nombre</label><input name="nombre" required>
+          <label>Email</label><input name="email" type="email" required>
+          <div class="actions">
+            <button type="button" class="btn secondary" data-close="modal-design">Cancelar</button>
+            <button type="submit" class="btn">Enviar</button>
+          </div>
+          <p class="note">Se guardará automáticamente y recibirás confirmación.</p>
+        </form>
+      </div>
+    </div>
+    <!-- Modal Consultoría -->
+    <div id="modal-consult" class="modal" aria-hidden="true">
+      <div class="card-form" role="dialog" aria-modal="true">
         <h3>Consultoría para Emprendedores</h3>
-        <p>Respondé unas preguntas rápidas y recibí una propuesta adaptada a tu negocio.</p>
+        <form id="formConsult">
+          <label>Nombre del negocio</label><input name="nombre" required>
+          <label>Rubro</label><input name="rubro">
+          <label>Público objetivo</label><textarea name="publico"></textarea>
+          <label>Objetivo</label>
+          <select name="objetivo">
+            <option>Vender más</option>
+            <option>Visibilidad</option>
+            <option>Marca</option>
+          </select>
+          <label>Presupuesto</label><input name="presupuesto">
+          <label>Email</label><input name="email" type="email" required>
+          <div class="actions">
+            <button type="button" class="btn secondary" data-close="modal-consult">Cancelar</button>
+            <button type="submit" class="btn">Enviar</button>
+          </div>
+        </form>
       </div>
-      <div class="servicio">
-        <h3>SEO y Publicidad</h3>
-        <p>Mejorá tu posicionamiento y aumentá tus ventas online.</p>
+    </div>
+
+    <!-- Modal SEO -->
+    <div id="modal-seo" class="modal" aria-hidden="true">
+      <div class="card-form" role="dialog" aria-modal="true">
+        <h3>SEO & Publicidad</h3>
+        <form id="formSeo">
+          <label>Tipo de campaña</label>
+          <select name="campania">
+            <option>SEO</option>
+            <option>Google Ads</option>
+            <option>Redes Sociales</option>
+            <option>Email Marketing</option>
+          </select>
+          <label>Objetivo</label>
+          <select name="objetivo">
+            <option>Visitas</option>
+            <option>Ventas</option>
+            <option>Seguidores</option>
+          </select>
+          <label>Duración</label>
+          <select name="duracion">
+            <option>1 mes</option>
+            <option>3 meses</option>
+            <option>6 meses</option>
+          </select>
+          <label>Presupuesto</label><input name="presupuesto">
+          <label>Nombre</label><input name="nombre" required>
+          <label>Email</label><input name="email" type="email" required>
+          <div class="actions">
+            <button type="button" class="btn secondary" data-close="modal-seo">Cancelar</button>
+            <button type="submit" class="btn">Enviar</button>
+          </div>
+        </form>
       </div>
     </div>
-  </section>
 
-  <section id="contacto">
-    <h2>Contacto</h2>
-    <p>¿Listo para dar el siguiente paso? Escribinos a <b><a href="mailto:ramiro2023buscema@gmail.com">ramiro2023buscema@gmail.com</a></b></p>
-  </section>
-
-  <footer>
-    <p>© 2025 RB Web Solutions - Creado por Ramiro Buscema</p>
-  </footer>
-
-  <!-- FORMULARIO 1 -->
-  <div id="formulario">
-    <div class="form-box">
-      <button class="cerrar" id="cerrarFormulario">X</button>
-      <h3>Diseñá tu página ideal</h3>
-      <form id="encuestaForm">
-        <label>1. Tipo de sitio</label>
-        <select name="tipoSitio" required>
-          <option>Personal / Portafolio</option>
-          <option>Empresa / Negocio</option>
-          <option>Tienda Online</option>
-          <option>Blog / Medio Digital</option>
-        </select>
-
-        <label>2. Estilo visual</label>
-        <select name="estilo">
-          <option>Moderno y Minimalista</option>
-          <option>Formal y Corporativo</option>
-          <option>Colorido y Creativo</option>
-          <option>Oscuro y Elegante</option>
-        </select>
-
-        <label>3. Colores principales</label>
-        <input type="text" name="colores" placeholder="Ej: azul y blanco">
-
-        <label>4. Tipografía preferida</label>
-        <select name="tipografia">
-          <option>Clásica</option>
-          <option>Moderna</option>
-          <option>Elegante</option>
-          <option>Tecnológica</option>
-        </select>
-
-        <label>5. Secciones del sitio</label>
-        <textarea name="secciones" placeholder="Ej: Inicio, Servicios, Contacto"></textarea>
-
-        <label>6. ¿Tenés logo?</label>
-        <select name="logo">
-          <option>Ya tengo</option>
-          <option>Necesito que lo diseñen</option>
-        </select>
-
-        <label>7. Nombre y correo</label>
-        <input type="text" name="nombre" placeholder="Tu nombre" required>
-        <input type="email" name="correo" placeholder="Tu correo" required>
-
-        <button type="submit" class="btn">Ver resumen</button>
-      </form>
-
-      <div id="resumen"></div>
+    <!-- Confirmación -->
+    <div id="confirm" class="confirm-wrap" aria-hidden="true">
+      <div class="confirm-card">
+        ✅ Tu mensaje fue enviado con éxito.
+        <small>Gracias por contactarte con RB Web Solutions.</small>
+      </div>
     </div>
-  </div>
 
-  <!-- FORMULARIO 2 -->
-  <div id="diagnostico">
-    <div class="form-box">
-      <button class="cerrar" id="cerrarDiagnostico">X</button>
-      <h3>Consultoría para Emprendedores</h3>
-      <form id="diagnosticoForm">
-        <label>1. Rubro o industria</label>
-        <input type="text" name="rubro" placeholder="Ej: ropa, comida, tecnología" required>
+    <!-- Panel de Administración -->
+    <section id="panel-admin">
+      <h2>Panel de administración (solo para vos)</h2>
+      <p class="note">Iniciá sesión con tu cuenta de administrador para ver y gestionar las entradas.</p>
 
-        <label>2. Público objetivo</label>
-        <input type="text" name="publico" placeholder="Ej: jóvenes, empresas, familias">
+      <div class="admin" id="auth-area">
+        <div id="auth-forms">
+          <label>Email admin</label>
+          <input id="adminEmail" type="email" placeholder="tu-admin@ejemplo.com">
+          <label>Contraseña</label>
+          <input id="adminPass" type="password" placeholder="********">
+          <div style="margin-top:10px">
+            <button id="btnLogin" class="btn">Entrar</button>
+            <button id="btnLogout" class="btn secondary" style="display:none">Salir</button>
+          </div>
+          <p class="note">Si no tenés cuenta admin creada, creala en Firebase Auth -> Email/Password.</p>
+        </div>
 
-        <label>3. Objetivo principal</label>
-        <select name="objetivo">
-          <option>Aumentar ventas</option>
-          <option>Conseguir más visibilidad</option>
-          <option>Mejorar imagen de marca</option>
-          <option>Digitalizar el negocio</option>
-        </select>
+        <div id="adminContent" style="display:none">
+          <div style="display:flex;gap:12px;align-items:center">
+            <strong>Filtrar por servicio:</strong>
+            <select id="filterService">
+              <option value="">Todos</option>
+              <option value="design">Diseño Web</option>
+              <option value="consult">Consultoría</option>
+              <option value="seo">SEO</option>
+            </select>
+            <button id="btnExport" class="btn secondary">Exportar CSV</button>
+          </div>
 
-        <label>4. Presupuesto estimado</label>
-        <input type="text" name="presupuesto" placeholder="Ej: $50.000 / $100 USD">
-
-        <label>5. Tiempo estimado</label>
-        <select name="tiempo">
-          <option>Urgente (1-2 semanas)</option>
-          <option>Corto plazo (1 mes)</option>
-          <option>Mediano plazo (2-3 meses)</option>
-          <option>No tengo apuro</option>
-        </select>
-
-        <label>6. Nombre y correo</label>
-        <input type="text" name="nombre" placeholder="Tu nombre" required>
-        <input type="email" name="correo" placeholder="Tu correo" required>
-
-        <button type="submit" class="btn">Ver diagnóstico</button>
-      </form>
-
-      <div id="resumen2"></div>
-    </div>
-  </div>
+          <table id="entriesTable" style="margin-top:12px">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Servicio</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Resumen</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Firebase + Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <script>
-    const abrir1 = document.getElementById('abrirFormulario');
-    const abrir2 = document.getElementById('abrirDiagnostico');
-    const modal1 = document.getElementById('formulario');
-    const modal2 = document.getElementById('diagnostico');
-    const cerrar1 = document.getElementById('cerrarFormulario');
-    const cerrar2 = document.getElementById('cerrarDiagnostico');
-    const form1 = document.getElementById('encuestaForm');
-    const form2 = document.getElementById('diagnosticoForm');
-    const resumen1 = document.getElementById('resumen');
-    const resumen2 = document.getElementById('resumen2');
+/* ========================= REEMPLAZAR CON TUS VALUES =========================
+   - RELLENA firebaseConfig con las credenciales de tu proyecto Firebase
+   - PON TU LINK DE FORMSPREE en FORMSPREE_URL_DESIGN / FORMSPREE_URL_CONSULT / FORMSPREE_URL_SEO
+=============================================================================*/
+const firebaseConfig = {
+  apiKey: "AIzaSyD94hZfdrNjNpsq9nFufdNVhFhvmDg_Lxg",
+  authDomain: "rb-web-solutions.firebaseapp.com",
+  projectId: "rb-web-solutions",
+  storageBucket: "rb-web-solutions.firebasestorage.app",
+  messagingSenderId: "1093904144527",
+  appId: "1:1093904144527:web:59c09a266d60d138c8b8fa",
+  measurementId: "G-6L7CH8VHDG"
+};
+const FORMSPREE_URL_DESIGN = "https://formspree.io/f/mkgqdln";
+const FORMSPREE_URL_CONSULT = "https://formspree.io/f/xldpqyek";
+const FORMSPREE_URL_SEO = "https://formspree.io/f/xyznrqyq";
+/* ========================================================================== */
 
-    abrir1.onclick = () => modal1.style.display = 'flex';
-    abrir2.onclick = () => modal2.style.display = 'flex';
-    cerrar1.onclick = () => { modal1.style.display = 'none'; form1.reset(); resumen1.style.display = 'none'; };
-    cerrar2.onclick = () => { modal2.style.display = 'none'; form2.reset(); resumen2.style.display = 'none'; };
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-    form1.onsubmit = (e) => {
-      e.preventDefault();
-      const data = new FormData(form1);
-      let html = "<h4 style='color:#d4af37'>Resumen de tu pedido:</h4>";
-      for (const [key, value] of data.entries()) html += `<p><b>${key}:</b> ${value}</p>`;
-      resumen1.innerHTML = html; resumen1.style.display = 'block';
-    };
+/* ------------------ UTILIDADES ------------------ */
+function sanitize(str){
+  if(!str) return "";
+  return String(str).replace(/<[^>]*>?/gm, '').trim().slice(0,2000);
+}
+function showConfirm(){
+  const c=document.getElementById('confirm'); 
+  c.style.display='flex'; c.setAttribute('aria-hidden','false');
+  setTimeout(()=>{ c.style.display='none'; c.setAttribute('aria-hidden','true'); }, 3000);
+}
 
-    form2.onsubmit = (e) => {
-      e.preventDefault();
-      const data = new FormData(form2);
-      let html = "<h4 style='color:#d4af37'>Diagnóstico de tu negocio:</h4>";
-      for (const [key, value] of data.entries()) html += `<p><b>${key}:</b> ${value}</p>`;
-      resumen2.innerHTML = html; resumen2.style.display = 'block';
-    };
+/* ------------------ MODALES abrir/cerrar ------------------ */
+document.querySelectorAll('[data-open]').forEach(btn=>{
+  btn.addEventListener('click', ()=> {
+    const id = btn.getAttribute('data-open');
+    document.getElementById(id).classList.add('open');
+    document.getElementById(id).setAttribute('aria-hidden','false');
+  });
+});
+document.querySelectorAll('[data-close]').forEach(btn=>{
+  btn.addEventListener('click', ()=> {
+    const id = btn.getAttribute('data-close');
+    document.getElementById(id).classList.remove('open');
+    document.getElementById(id).setAttribute('aria-hidden','true');
+  });
+});
+document.querySelectorAll('.modal').forEach(m=>{
+  m.addEventListener('click', (e)=>{ if(e.target === m){ m.classList.remove('open'); m.setAttribute('aria-hidden','true'); } });
+});
+
+/* ------------------ AUTOSAVE (localStorage) ------------------ */
+function enableAutosave(formId, storageKey){
+  const form = document.getElementById(formId);
+  const saved = localStorage.getItem(storageKey);
+  if(saved){
+    try{
+      const obj=JSON.parse(saved);
+      Object.keys(obj).forEach(k=>{
+        const el = form.elements[k];
+        if(el) el.value = obj[k];
+      });
+    }catch(e){}
+  }
+  form.addEventListener('input', ()=>{
+    const fd = new FormData(form);
+    const obj = {};
+    fd.forEach((v,k)=> obj[k]=v);
+    localStorage.setItem(storageKey, JSON.stringify(obj));
+  });
+}
+enableAutosave('formDesign','autosave_design_v1');
+enableAutosave('formConsult','autosave_consult_v1');
+enableAutosave('formSeo','autosave_seo_v1');
+
+/* ------------------ SUBMIT: Firestore + Formspree -------------- */
+async function handleSubmit(formEl, serviceTag, formspreeUrl){
+  const fd = new FormData(formEl);
+  const payload = {};
+  fd.forEach((v,k)=> payload[k]=sanitize(v));
+  payload._service = serviceTag;
+  payload._ts = new Date().toISOString();
+
+  try{ await db.collection('leads').add(payload); }catch(err){ console.error(err); }
+
+  try{
+    const res = await fetch(formspreeUrl, { method:'POST', body: new URLSearchParams(payload), headers:{ 'Accept':'application/json' }});
+    if(!res.ok) console.warn('Formspree responded with non-ok', res.status);
+  }catch(err){ console.warn(err); }
+
+  formEl.reset();
+  if(serviceTag==='design') localStorage.removeItem('autosave_design_v1');
+  if(serviceTag==='consult') localStorage.removeItem('autosave_consult_v1');
+  if(serviceTag==='seo') localStorage.removeItem('autosave_seo_v1');
+
+  showConfirm();
+}
+
+/* ------------------ HOOK FORMS ------------------ */
+document.getElementById('formDesign').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  await handleSubmit(e.target, 'design', FORMSPREE_URL_DESIGN);
+  document.getElementById('modal-design').classList.remove('open');
+});
+document.getElementById('formConsult').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  await handleSubmit(e.target, 'consult', FORMSPREE_URL_CONSULT);
+  document.getElementById('modal-consult').classList.remove('open');
+});
+document.getElementById('formSeo').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  await handleSubmit(e.target, 'seo', FORMSPREE_URL_SEO);
+  document.getElementById('modal-seo').classList.remove('open');
+});
+
+/* ------------------ ADMIN AUTH + LISTING ------------------ */
+const btnLogin = document.getElementById('btnLogin');
+const btnLogout = document.getElementById('btnLogout');
+const adminContent = document.getElementById('adminContent');
+const entriesTableBody = document.querySelector('#entriesTable tbody');
+const filterService = document.getElementById('filterService');
+const btnExport = document.getElementById('btnExport');
+
+btnLogin.addEventListener('click', async ()=>{
+  const email = document.getElementById('adminEmail').value;
+  const pass = document.getElementById('adminPass').value;
+  try{ await auth.signInWithEmailAndPassword(email, pass); }catch(err){ alert('Error al iniciar sesión: '+err.message); }
+});
+btnLogout.addEventListener('click', ()=> auth.signOut());
+
+auth.onAuthStateChanged(async (user)=>{
+  if(user){
+    document.getElementById('adminEmail').style.display='none';
+    document.getElementById('adminPass').style.display='none';
+    btnLogin.style.display='none';
+    btnLogout.style.display='inline-block';
+    adminContent.style.display='block';
+    loadEntries();
+  }else{
+    document.getElementById('adminEmail').style.display='block';
+    document.getElementById('adminPass').style.display='block';
+    btnLogin.style.display='inline-block';
+    btnLogout.style.display='none';
+    adminContent.style.display='none';
+    entriesTableBody.innerHTML='';
+  }
+});
+
+/* Carga en tiempo real */
+let unsubscribe = null;
+function loadEntries(){
+  if(unsubscribe) unsubscribe();
+  const q = db.collection('leads').orderBy('_ts','desc');
+  unsubscribe = q.onSnapshot(snap=>{
+    const rows=[];
+    snap.forEach(doc=>{
+      const d = doc.data();
+      d._id = doc.id;
+      rows.push(d);
+    });
+    renderEntries(rows);
+  });
+}
+
+function renderEntries(rows){
+  const filter = filterService.value;
+  entriesTableBody.innerHTML = '';
+  rows.forEach(row=>{
+    if(filter && row._service !== filter) return;
+    const tr = document.createElement('tr');
+    const fecha = new Date(row._ts).toLocaleString();
+    const servicio = row._service || '-';
+    const nombre = row.nombre || '-';
+    const email = row.email || '-';
+    const summary = Object.keys(row).filter(k=>!['_ts','_service','_id'].includes(k)).map(k=>`${k}: ${row[k]}`).join(' | ');
+    tr.innerHTML = `<td>${fecha}</td><td>${servicio}</td><td>${escapeHtml(nombre)}</td><td>${escapeHtml(email)}</td><td>${escapeHtml(summary)}</td>
+      <td><span class="status" data-id="${row._id}">Nuevo</span></td>`;
+    entriesTableBody.appendChild(tr);
+  });
+}
+
+/* Export CSV */
+btnExport.addEventListener('click', async ()=>{
+  const snap = await db.collection('leads').orderBy('_ts','desc').get();
+  const arr = [];
+  snap.forEach(doc=> arr.push({...doc.data(), id:doc.id}));
+  if(arr.length===0){ alert('No hay entradas'); return; }
+  const csv = toCSV(arr);
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'rbws_leads.csv'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* Helpers */
+function toCSV(arr){
+  const keys = Array.from(new Set(arr.flatMap(o=>Object.keys(o))));
+  const header = keys.join(',');
+  const lines = arr.map(o => keys.map(k=>`"${String(o[k]||'').replace(/"/g,'""')}"`).join(','));
+  return [header, ...lines].join('\n');
+}
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+/* Filter change */
+filterService.addEventListener('change', ()=> loadEntries());
+
+/* ESC para cerrar modales */
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open')); } });
+
   </script>
-</body>
-</html>
