@@ -1,461 +1,261 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>RB Web Solutions | PRO</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RB Web Solutions PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- CSP básica -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self' https:; 
-    script-src 'self' https://www.gstatic.com https://www.googleapis.com 'unsafe-inline' 'unsafe-eval';
-    connect-src 'self' https://firestore.googleapis.com https://www.googleapis.com https://formspree.io;
-    img-src 'self' data: https://images.unsplash.com;
-    style-src 'self' 'unsafe-inline' https:;
-    font-src 'self' https://fonts.gstatic.com;">
+<style>
+/* Reset y fuentes */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Poppins,sans-serif;background:#f9f5f0;color:#3e2c1c;line-height:1.6;transition:0.3s}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;border-radius:12px}
 
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter, Poppins, system-ui, Arial; background:#0b0b0c;color:#eaeaea;line-height:1.5}
-    a{color:inherit}
-    .container{max-width:1100px;margin:0 auto;padding:20px}
+/* HEADER y NAV */
+header{position:fixed;top:0;left:0;width:100%;background:#f9f5f0;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+header .brand{font-weight:700;font-size:1.8rem;color:#8b5e3c}
+#menu-btn{font-size:1.8rem;cursor:pointer}
+#home-btn{cursor:pointer}
+nav{position:fixed;top:0;left:-260px;width:240px;height:100vh;background:#8b5e3c;color:#fff;padding:60px 20px;transition:0.4s;display:flex;flex-direction:column;gap:24px;z-index:999}
+nav.open{left:0}
+nav a{color:#fff;font-weight:600;font-size:1.1rem}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;z-index:998}
 
-    header{background:linear-gradient(180deg, rgba(2,2,2,0.85), rgba(6,6,6,0.85)), url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d') center/cover no-repeat;padding:80px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .brand{color:#d4af37;font-weight:700;font-size:2.1rem}
-    header p{margin-top:10px;color:#f3f3f3;max-width:900px;margin-left:auto;margin-right:auto}
+/* MAIN */
+main{padding-top:80px;transition:0.3s}
 
-    section{padding:60px 20px;background:linear-gradient(180deg,#0f0f10 0,#0b0b0c 100%);border-top:1px solid rgba(255,255,255,0.03)}
-    h2{color:#d4af37;margin-bottom:10px}
-    p.lead{color:#dcdcdc;max-width:900px;margin:0 auto 10px}
+/* SECCIONES */
+section{padding:60px 20px;max-width:1100px;margin:0 auto}
+h1,h2,h3{color:#5c3a21;margin-bottom:16px}
+p{color:#3e2c1c;margin-bottom:12px}
+.lead{font-size:1.1rem;max-width:900px;margin-bottom:24px}
 
-    .cards{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
-    .card{background:#121212;border-radius:12px;padding:20px;width:300px;border:1px solid rgba(212,175,55,0.06);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
-    .card h3{color:#d4af37;margin-bottom:8px}
-    .btn{display:inline-block;background:#d4af37;color:#000;padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;border:0}
-    .btn.secondary{background:transparent;border:1px solid rgba(212,175,55,0.12);color:#d4af37}
+/* BOTONES */
+.btn{padding:10px 16px;border:none;border-radius:8px;cursor:pointer;font-weight:700;transition:0.3s}
+.btn-primary{background:#c48b4f;color:#fff}
+.btn-secondary{background:transparent;border:2px solid #c48b4f;color:#c48b4f}
 
-    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:60;align-items:center;justify-content:center;padding:20px}
-    .modal.open{display:flex}
-    .card-form{width:100%;max-width:720px;background:#0f0f11;border-radius:12px;padding:18px;border:2px solid #222;color:#eaeaea;max-height:90vh;overflow:auto}
-    label{font-weight:600;color:#d4af37;margin-top:12px;display:block}
-    input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #262626;background:#0b0b0b;color:#fff;margin-top:6px}
-    textarea{min-height:110px;resize:vertical}
+/* CARDS */
+.cards{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+.card{background:#f5efe7;border-radius:12px;padding:20px;width:300px;box-shadow:0 6px 20px rgba(0,0,0,0.1)}
+.card img{border-radius:12px;margin-bottom:12px}
 
-    .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
-    .note{color:#bdbdbd;font-size:.9rem;margin-top:8px}
+/* FORMULARIOS */
+.form-section{background:#fff2e6;padding:24px;border-radius:12px;margin-top:24px;box-shadow:0 6px 20px rgba(0,0,0,0.1);display:none}
+label{font-weight:600;margin-top:12px;display:block}
+input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #d9bfa6;margin-top:6px}
+textarea{min-height:100px;resize:vertical}
 
-    .confirm-wrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center}
-    .confirm-card{background:#0d0d0d;border:2px solid #d4af37;padding:26px 34px;border-radius:12px;color:#d4af37;font-weight:700;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
-    .confirm-card small{display:block;color:#cfcfcf;font-weight:400;margin-top:8px;font-size:.9rem}
+/* BOT FLotante */
+#bot{position:fixed;bottom:24px;right:24px;background:#c48b4f;color:#fff;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.2);font-size:1.6rem}
+#bot-chat{position:fixed;bottom:100px;right:24px;width:320px;max-width:90%;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.2);display:none;flex-direction:column;overflow:hidden;z-index:1000}
+#bot-chat .header{background:#c48b4f;color:#fff;padding:12px;font-weight:700;text-align:center}
+#bot-chat .messages{padding:12px;flex:1;overflow-y:auto;max-height:300px}
+#bot-chat .input{display:flex;gap:6px;padding:8px;border-top:1px solid #ddd}
+#bot-chat input{flex:1;padding:8px;border-radius:6px;border:1px solid #ccc}
 
-    .admin{padding:18px;background:#0f0f11;border-radius:10px;border:1px solid #222;margin-top:18px;color:#eaeaea}
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:.95rem}
-    th{color:#d4af37}
-    .status{padding:6px 8px;border-radius:6px;font-weight:700}
-
-    @media (max-width:700px){header{padding:48px 16px}.card{width:100%}}
-  </style>
+/* RESPONSIVE */
+@media(max-width:768px){.cards{flex-direction:column;align-items:center}nav{width:200px}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <div class="brand">RB Web Solutions</div>
-      <p>Versión PRO — guardado en base de datos, panel de administración y máxima seguridad.</p>
-    </div>
-  </header>
 
-  <main class="container">
-    <section id="inicio">
-      <h2>Servicios</h2>
-      <p class="lead">Elegí una opción y completá el formulario. Tus respuestas quedarán guardadas en la base de datos y te llegarán por email.</p>
-      <div class="cards">
-        <div class="card">
-          <h3>Diseño Web Profesional</h3>
-          <p>Encuesta completa para definir estructura, colores y tipografía.</p>
-          <button class="btn" data-open="modal-design">Abrir</button>
-        </div>
-        <div class="card">
-          <h3>Consultoría para Emprendedores</h3>
-          <p>Diagnóstico estratégico para tu negocio.</p>
-          <button class="btn" data-open="modal-consult">Abrir</button>
-        </div>
-        <div class="card">
-          <h3>SEO & Publicidad</h3>
-          <p>Presupuesto para campañas y posicionamiento.</p>
-          <button class="btn" data-open="modal-seo">Abrir</button>
-        </div>
-      </div>
-    </section>
+<!-- NAV -->
+<header>
+  <div class="brand">RB Web Solutions</div>
+  <div style="display:flex;gap:16px;align-items:center">
+    <div id="menu-btn">&#9776;</div>
+    <div id="home-btn" class="btn btn-secondary">Inicio</div>
+  </div>
+</header>
+<nav id="nav-menu">
+  <a href="#inicio" data-section="inicio">Inicio</a>
+  <a href="#servicios" data-section="servicios">Servicios</a>
+  <a href="#modelos" data-section="modelos">Modelos</a>
+  <a href="#publicidad" data-section="publicidad">Publicidad</a>
+  <a href="#contacto" data-section="contacto">Contacto</a>
+</nav>
+<div id="overlay"></div>
 
-    <!-- Modal Diseño -->
-    <div id="modal-design" class="modal" aria-hidden="true">
-      <div class="card-form" role="dialog" aria-modal="true" aria-labelledby="design-title">
-        <h3 id="design-title">Diseño Web Profesional</h3>
-        <form id="formDesign">
-          <label>Tipo de sitio</label>
-          <select name="tipo" required>
-            <option>Empresa / Negocio</option>
-            <option>Personal / Portfolio</option>
-            <option>Tienda Online</option>
-            <option>Blog</option>
-          </select>
-          <label>Estilo</label>
-          <select name="estilo">
-            <option>Moderno</option>
-            <option>Corporativo</option>
-            <option>Creativo</option>
-            <option>Oscuro</option>
-          </select>
-          <label>Colores</label>
-          <input name="colores" placeholder="Ej: azul y blanco">
-          <label>Tipografía</label>
-          <input name="tipografia" placeholder="Ej: Poppins">
-          <label>Secciones</label>
-          <textarea name="secciones" placeholder="Inicio, Servicios, Contacto"></textarea>
-          <label>Logo (¿tenés?)</label>
-          <select name="logo">
-            <option>Si</option>
-            <option>No</option>
-          </select>
-          <label>Nombre</label><input name="nombre" required>
-          <label>Email</label><input name="email" type="email" required>
-          <div class="actions">
-            <button type="button" class="btn secondary" data-close="modal-design">Cancelar</button>
-            <button type="submit" class="btn">Enviar</button>
-          </div>
-          <p class="note">Se guardará automáticamente y recibirás confirmación.</p>
-        </form>
+<main>
+  <!-- SECCION INICIO -->
+  <section id="inicio">
+    <h1>Bienvenidos a RB Web Solutions</h1>
+    <p class="lead">Somos expertos en diseño web y servicios digitales. Creamos sitios personalizados, estéticos y funcionales para tu negocio o proyecto personal. Nuestro objetivo es que tu página sea interactiva, atractiva y fácil de usar.</p>
+    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" alt="Presentación web">
+  </section>
+
+  <!-- SECCION SERVICIOS -->
+  <section id="servicios">
+    <h2>Servicios</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Diseño Web Profesional</h3>
+        <p>Formularios completos para definir tu sitio web</p>
+        <button class="btn btn-primary" data-open-form="form-design">Abrir</button>
       </div>
-    </div>
-    <!-- Modal Consultoría -->
-    <div id="modal-consult" class="modal" aria-hidden="true">
-      <div class="card-form" role="dialog" aria-modal="true">
+      <div class="card">
         <h3>Consultoría para Emprendedores</h3>
-        <form id="formConsult">
-          <label>Nombre del negocio</label><input name="nombre" required>
-          <label>Rubro</label><input name="rubro">
-          <label>Público objetivo</label><textarea name="publico"></textarea>
-          <label>Objetivo</label>
-          <select name="objetivo">
-            <option>Vender más</option>
-            <option>Visibilidad</option>
-            <option>Marca</option>
-          </select>
-          <label>Presupuesto</label><input name="presupuesto">
-          <label>Email</label><input name="email" type="email" required>
-          <div class="actions">
-            <button type="button" class="btn secondary" data-close="modal-consult">Cancelar</button>
-            <button type="submit" class="btn">Enviar</button>
-          </div>
-        </form>
+        <p>Diagnóstico estratégico de tu negocio</p>
+        <button class="btn btn-primary" data-open-form="form-consult">Abrir</button>
       </div>
-    </div>
-
-    <!-- Modal SEO -->
-    <div id="modal-seo" class="modal" aria-hidden="true">
-      <div class="card-form" role="dialog" aria-modal="true">
+      <div class="card">
         <h3>SEO & Publicidad</h3>
-        <form id="formSeo">
-          <label>Tipo de campaña</label>
-          <select name="campania">
-            <option>SEO</option>
-            <option>Google Ads</option>
-            <option>Redes Sociales</option>
-            <option>Email Marketing</option>
-          </select>
-          <label>Objetivo</label>
-          <select name="objetivo">
-            <option>Visitas</option>
-            <option>Ventas</option>
-            <option>Seguidores</option>
-          </select>
-          <label>Duración</label>
-          <select name="duracion">
-            <option>1 mes</option>
-            <option>3 meses</option>
-            <option>6 meses</option>
-          </select>
-          <label>Presupuesto</label><input name="presupuesto">
-          <label>Nombre</label><input name="nombre" required>
-          <label>Email</label><input name="email" type="email" required>
-          <div class="actions">
-            <button type="button" class="btn secondary" data-close="modal-seo">Cancelar</button>
-            <button type="submit" class="btn">Enviar</button>
-          </div>
-        </form>
+        <p>Campañas y posicionamiento web</p>
+        <button class="btn btn-primary" data-open-form="form-seo">Abrir</button>
       </div>
     </div>
 
-    <!-- Confirmación -->
-    <div id="confirm" class="confirm-wrap" aria-hidden="true">
-      <div class="confirm-card">
-        ✅ Tu mensaje fue enviado con éxito.
-        <small>Gracias por contactarte con RB Web Solutions.</small>
-      </div>
+    <!-- FORMULARIOS -->
+    <div id="form-design" class="form-section">
+      <h3>Formulario Diseño Web</h3>
+      <form>
+        <label>Tipo de sitio</label><select><option>Empresa</option><option>Personal</option><option>Tienda Online</option><option>Blog</option></select>
+        <label>Estilo</label><input placeholder="Ej: moderno, creativo">
+        <label>Colores</label><input placeholder="Ej: marrón y beige">
+        <label>Tipografía</label><input placeholder="Ej: Poppins">
+        <label>Secciones</label><textarea placeholder="Inicio, Servicios, Contacto"></textarea>
+        <label>Descripción libre</label><textarea placeholder="Detalles extra que quieras"></textarea>
+        <label>Nombre</label><input placeholder="Tu nombre">
+        <label>Email</label><input type="email" placeholder="Tu email">
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
     </div>
 
-    <!-- Panel de Administración -->
-    <section id="panel-admin">
-      <h2>Panel de administración (solo para vos)</h2>
-      <p class="note">Iniciá sesión con tu cuenta de administrador para ver y gestionar las entradas.</p>
+    <div id="form-consult" class="form-section">
+      <h3>Formulario Consultoría</h3>
+      <form>
+        <label>Nombre del negocio</label><input placeholder="Nombre negocio">
+        <label>Rubro</label><input placeholder="Ej: comida, servicios">
+        <label>Público objetivo</label><textarea placeholder="Ej: jóvenes, adultos"></textarea>
+        <label>Objetivo</label><input placeholder="Ej: aumentar ventas">
+        <label>Presupuesto</label><input placeholder="Ej: $5000">
+        <label>Email</label><input type="email" placeholder="Tu email">
+        <label>Descripción libre</label><textarea placeholder="Detalles extra"></textarea>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
 
-      <div class="admin" id="auth-area">
-        <div id="auth-forms">
-          <label>Email admin</label>
-          <input id="adminEmail" type="email" placeholder="tu-admin@ejemplo.com">
-          <label>Contraseña</label>
-          <input id="adminPass" type="password" placeholder="********">
-          <div style="margin-top:10px">
-            <button id="btnLogin" class="btn">Entrar</button>
-            <button id="btnLogout" class="btn secondary" style="display:none">Salir</button>
-          </div>
-          <p class="note">Si no tenés cuenta admin creada, creala en Firebase Auth -> Email/Password.</p>
-        </div>
+    <div id="form-seo" class="form-section">
+      <h3>Formulario SEO & Publicidad</h3>
+      <form>
+        <label>Tipo de campaña</label><input placeholder="Ej: Google Ads">
+        <label>Objetivo</label><input placeholder="Ej: más visitas">
+        <label>Duración</label><input placeholder="Ej: 3 meses">
+        <label>Presupuesto</label><input placeholder="Ej: $3000">
+        <label>Nombre</label><input placeholder="Tu nombre">
+        <label>Email</label><input type="email" placeholder="Tu email">
+        <label>Descripción libre</label><textarea placeholder="Detalles extra"></textarea>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </section>
 
-        <div id="adminContent" style="display:none">
-          <div style="display:flex;gap:12px;align-items:center">
-            <strong>Filtrar por servicio:</strong>
-            <select id="filterService">
-              <option value="">Todos</option>
-              <option value="design">Diseño Web</option>
-              <option value="consult">Consultoría</option>
-              <option value="seo">SEO</option>
-            </select>
-            <button id="btnExport" class="btn secondary">Exportar CSV</button>
-          </div>
-
-          <table id="entriesTable" style="margin-top:12px">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Servicio</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Resumen</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+  <!-- SECCION MODELOS -->
+  <section id="modelos">
+    <h2>Modelos de Páginas</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://picsum.photos/300/200?1">
+        <h3>Modelo Moderno</h3>
+        <a href="https://www.w3schools.com" target="_blank" class="btn btn-primary">Ver Página</a>
       </div>
-    </section>
-  </main>
-  <!-- Firebase + Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+      <div class="card">
+        <img src="https://picsum.photos/300/200?2">
+        <h3>Modelo Creativo</h3>
+        <a href="https://www.example.com" target="_blank" class="btn btn-primary">Ver Página</a>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/300/200?3">
+        <h3>Modelo Corporativo</h3>
+        <a href="https://www.wikipedia.org" target="_blank" class="btn btn-primary">Ver Página</a>
+      </div>
+    </div>
+  </section>
 
-  <script>
-/* ========================= REEMPLAZAR CON TUS VALUES =========================
-   - RELLENA firebaseConfig con las credenciales de tu proyecto Firebase
-   - PON TU LINK DE FORMSPREE en FORMSPREE_URL_DESIGN / FORMSPREE_URL_CONSULT / FORMSPREE_URL_SEO
-=============================================================================*/
-const firebaseConfig = {
-  apiKey: "AIzaSyD94hZfdrNjNpsq9nFufdNVhFhvmDg_Lxg",
-  authDomain: "rb-web-solutions.firebaseapp.com",
-  projectId: "rb-web-solutions",
-  storageBucket: "rb-web-solutions.firebasestorage.app",
-  messagingSenderId: "1093904144527",
-  appId: "1:1093904144527:web:59c09a266d60d138c8b8fa",
-  measurementId: "G-6L7CH8VHDG"
-};
-const FORMSPREE_URL_DESIGN = "https://formspree.io/f/mkgqdln";
-const FORMSPREE_URL_CONSULT = "https://formspree.io/f/xldpqyek";
-const FORMSPREE_URL_SEO = "https://formspree.io/f/xyznrqyq";
-/* ========================================================================== */
+  <!-- SECCION PUBLICIDAD -->
+  <section id="publicidad">
+    <h2>Publicidad</h2>
+    <div class="form-section" style="display:block">
+      <h3>Formulario Publicidad</h3>
+      <form>
+        <label>Nombre</label><input placeholder="Tu nombre">
+        <label>Email</label><input type="email" placeholder="Tu email">
+        <label>Tipo de publicidad</label><input placeholder="Ej: Google Ads, Facebook">
+        <label>Presupuesto</label><input placeholder="Ej: $2000">
+        <label>Descripción libre</label><textarea placeholder="Detalles extra"></textarea>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </section>
+</main>
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+<!-- BOT IA -->
+<div id="bot">💬</div>
+<div id="bot-chat">
+  <div class="header">Asistente RB</div>
+  <div class="messages"><div>💬 Hola! ¿Necesitas ayuda en algo?</div></div>
+  <div class="input">
+    <input placeholder="Escribe tu mensaje...">
+    <button class="btn btn-primary" id="send-btn">Enviar</button>
+  </div>
+</div>
 
-/* ------------------ UTILIDADES ------------------ */
-function sanitize(str){
-  if(!str) return "";
-  return String(str).replace(/<[^>]*>?/gm, '').trim().slice(0,2000);
-}
-function showConfirm(){
-  const c=document.getElementById('confirm'); 
-  c.style.display='flex'; c.setAttribute('aria-hidden','false');
-  setTimeout(()=>{ c.style.display='none'; c.setAttribute('aria-hidden','true'); }, 3000);
-}
-
-/* ------------------ MODALES abrir/cerrar ------------------ */
-document.querySelectorAll('[data-open]').forEach(btn=>{
-  btn.addEventListener('click', ()=> {
-    const id = btn.getAttribute('data-open');
-    document.getElementById(id).classList.add('open');
-    document.getElementById(id).setAttribute('aria-hidden','false');
+<script>
+// MENÚ HAMBURGUESA
+const menuBtn = document.getElementById('menu-btn');
+const navMenu = document.getElementById('nav-menu');
+const overlay = document.getElementById('overlay');
+menuBtn.addEventListener('click', ()=>{navMenu.classList.add('open'); overlay.style.display='block';});
+overlay.addEventListener('click', ()=>{navMenu.classList.remove('open'); overlay.style.display='none';});
+document.querySelectorAll('nav a').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    navMenu.classList.remove('open'); overlay.style.display='none';
+    const section = document.querySelector('#'+a.dataset.section);
+    if(section) section.scrollIntoView({behavior:'smooth'});
   });
 });
-document.querySelectorAll('[data-close]').forEach(btn=>{
-  btn.addEventListener('click', ()=> {
-    const id = btn.getAttribute('data-close');
-    document.getElementById(id).classList.remove('open');
-    document.getElementById(id).setAttribute('aria-hidden','true');
+
+// BOTÓN INICIO
+document.getElementById('home-btn').addEventListener('click', ()=>{
+  document.querySelector('#inicio').scrollIntoView({behavior:'smooth'});
+});
+
+// ABRIR FORMULARIOS
+document.querySelectorAll('[data-open-form]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const id = btn.dataset.openForm;
+    document.querySelectorAll('.form-section').forEach(f=>f.style.display='none');
+    document.getElementById(id).style.display='block';
+    document.getElementById(id).scrollIntoView({behavior:'smooth'});
   });
 });
-document.querySelectorAll('.modal').forEach(m=>{
-  m.addEventListener('click', (e)=>{ if(e.target === m){ m.classList.remove('open'); m.setAttribute('aria-hidden','true'); } });
-});
 
-/* ------------------ AUTOSAVE (localStorage) ------------------ */
-function enableAutosave(formId, storageKey){
-  const form = document.getElementById(formId);
-  const saved = localStorage.getItem(storageKey);
-  if(saved){
-    try{
-      const obj=JSON.parse(saved);
-      Object.keys(obj).forEach(k=>{
-        const el = form.elements[k];
-        if(el) el.value = obj[k];
-      });
-    }catch(e){}
-  }
-  form.addEventListener('input', ()=>{
-    const fd = new FormData(form);
-    const obj = {};
-    fd.forEach((v,k)=> obj[k]=v);
-    localStorage.setItem(storageKey, JSON.stringify(obj));
-  });
+// BOT IA
+const botBtn = document.getElementById('bot');
+const botChat = document.getElementById('bot-chat');
+const sendBtn = document.getElementById('send-btn');
+const input = botChat.querySelector('input');
+const messages = botChat.querySelector('.messages');
+
+botBtn.addEventListener('click', ()=>{botChat.style.display = botChat.style.display==='flex'?'none':'flex'; botChat.style.flexDirection='column';});
+sendBtn.addEventListener('click', ()=>{sendMessage();});
+input.addEventListener('keypress', e=>{if(e.key==='Enter'){sendMessage();}});
+
+function sendMessage(){
+  const msg = input.value.trim();
+  if(!msg) return;
+  const div = document.createElement('div'); div.textContent = 'Tú: '+msg; messages.appendChild(div);
+  input.value='';
+  setTimeout(()=>{
+    const botDiv = document.createElement('div'); botDiv.textContent = '💬 Bot: Gracias por tu mensaje. Te responderemos pronto.'; messages.appendChild(botDiv);
+    messages.scrollTop = messages.scrollHeight;
+  },600);
+  messages.scrollTop = messages.scrollHeight;
 }
-enableAutosave('formDesign','autosave_design_v1');
-enableAutosave('formConsult','autosave_consult_v1');
-enableAutosave('formSeo','autosave_seo_v1');
+</script>
 
-/* ------------------ SUBMIT: Firestore + Formspree -------------- */
-async function handleSubmit(formEl, serviceTag, formspreeUrl){
-  const fd = new FormData(formEl);
-  const payload = {};
-  fd.forEach((v,k)=> payload[k]=sanitize(v));
-  payload._service = serviceTag;
-  payload._ts = new Date().toISOString();
-
-  try{ await db.collection('leads').add(payload); }catch(err){ console.error(err); }
-
-  try{
-    const res = await fetch(formspreeUrl, { method:'POST', body: new URLSearchParams(payload), headers:{ 'Accept':'application/json' }});
-    if(!res.ok) console.warn('Formspree responded with non-ok', res.status);
-  }catch(err){ console.warn(err); }
-
-  formEl.reset();
-  if(serviceTag==='design') localStorage.removeItem('autosave_design_v1');
-  if(serviceTag==='consult') localStorage.removeItem('autosave_consult_v1');
-  if(serviceTag==='seo') localStorage.removeItem('autosave_seo_v1');
-
-  showConfirm();
-}
-
-/* ------------------ HOOK FORMS ------------------ */
-document.getElementById('formDesign').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  await handleSubmit(e.target, 'design', FORMSPREE_URL_DESIGN);
-  document.getElementById('modal-design').classList.remove('open');
-});
-document.getElementById('formConsult').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  await handleSubmit(e.target, 'consult', FORMSPREE_URL_CONSULT);
-  document.getElementById('modal-consult').classList.remove('open');
-});
-document.getElementById('formSeo').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  await handleSubmit(e.target, 'seo', FORMSPREE_URL_SEO);
-  document.getElementById('modal-seo').classList.remove('open');
-});
-
-/* ------------------ ADMIN AUTH + LISTING ------------------ */
-const btnLogin = document.getElementById('btnLogin');
-const btnLogout = document.getElementById('btnLogout');
-const adminContent = document.getElementById('adminContent');
-const entriesTableBody = document.querySelector('#entriesTable tbody');
-const filterService = document.getElementById('filterService');
-const btnExport = document.getElementById('btnExport');
-
-btnLogin.addEventListener('click', async ()=>{
-  const email = document.getElementById('adminEmail').value;
-  const pass = document.getElementById('adminPass').value;
-  try{ await auth.signInWithEmailAndPassword(email, pass); }catch(err){ alert('Error al iniciar sesión: '+err.message); }
-});
-btnLogout.addEventListener('click', ()=> auth.signOut());
-
-auth.onAuthStateChanged(async (user)=>{
-  if(user){
-    document.getElementById('adminEmail').style.display='none';
-    document.getElementById('adminPass').style.display='none';
-    btnLogin.style.display='none';
-    btnLogout.style.display='inline-block';
-    adminContent.style.display='block';
-    loadEntries();
-  }else{
-    document.getElementById('adminEmail').style.display='block';
-    document.getElementById('adminPass').style.display='block';
-    btnLogin.style.display='inline-block';
-    btnLogout.style.display='none';
-    adminContent.style.display='none';
-    entriesTableBody.innerHTML='';
-  }
-});
-
-/* Carga en tiempo real */
-let unsubscribe = null;
-function loadEntries(){
-  if(unsubscribe) unsubscribe();
-  const q = db.collection('leads').orderBy('_ts','desc');
-  unsubscribe = q.onSnapshot(snap=>{
-    const rows=[];
-    snap.forEach(doc=>{
-      const d = doc.data();
-      d._id = doc.id;
-      rows.push(d);
-    });
-    renderEntries(rows);
-  });
-}
-
-function renderEntries(rows){
-  const filter = filterService.value;
-  entriesTableBody.innerHTML = '';
-  rows.forEach(row=>{
-    if(filter && row._service !== filter) return;
-    const tr = document.createElement('tr');
-    const fecha = new Date(row._ts).toLocaleString();
-    const servicio = row._service || '-';
-    const nombre = row.nombre || '-';
-    const email = row.email || '-';
-    const summary = Object.keys(row).filter(k=>!['_ts','_service','_id'].includes(k)).map(k=>`${k}: ${row[k]}`).join(' | ');
-    tr.innerHTML = `<td>${fecha}</td><td>${servicio}</td><td>${escapeHtml(nombre)}</td><td>${escapeHtml(email)}</td><td>${escapeHtml(summary)}</td>
-      <td><span class="status" data-id="${row._id}">Nuevo</span></td>`;
-    entriesTableBody.appendChild(tr);
-  });
-}
-
-/* Export CSV */
-btnExport.addEventListener('click', async ()=>{
-  const snap = await db.collection('leads').orderBy('_ts','desc').get();
-  const arr = [];
-  snap.forEach(doc=> arr.push({...doc.data(), id:doc.id}));
-  if(arr.length===0){ alert('No hay entradas'); return; }
-  const csv = toCSV(arr);
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'rbws_leads.csv'; a.click();
-  URL.revokeObjectURL(url);
-});
-
-/* Helpers */
-function toCSV(arr){
-  const keys = Array.from(new Set(arr.flatMap(o=>Object.keys(o))));
-  const header = keys.join(',');
-  const lines = arr.map(o => keys.map(k=>`"${String(o[k]||'').replace(/"/g,'""')}"`).join(','));
-  return [header, ...lines].join('\n');
-}
-function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-
-/* Filter change */
-filterService.addEventListener('change', ()=> loadEntries());
-
-/* ESC para cerrar modales */
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open')); } });
-
-  </script>
+</body>
+</html>
